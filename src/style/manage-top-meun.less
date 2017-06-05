@@ -1,0 +1,23 @@
+@baseColor: #003366;
+.top-meun {
+  background-color: @baseColor;
+  .el-menu {
+    background-color: @baseColor;
+    .el-menu-item {
+      color: wheat;
+    }
+  }
+  .el-menu--horizontal .el-menu-item:hover, .el-menu--horizontal .el-submenu__title:hover {
+    background-color: fade(wheat,20%);
+  }
+  li.el-menu-item.is-active{
+    color: yellow;
+    border-bottom: 3px solid yellow;
+  }
+  p#top-title {
+    color: #A6BACE;
+    margin-left: 20px;
+    font-size: 1.4rem;
+    line-height: 1.4rem;
+  }
+}
