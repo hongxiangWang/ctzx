@@ -32,9 +32,9 @@
         mounted(){
             this.$ajax.interceptors.request.use(function (config) {
                 //在请求发出之前进行一些操作
-
-                if (localStorage.getItem('token')) {
-                    config.headers.token = localStorage.getItem('token');
+                let token = this.$localStore.get('token');
+                if (token) {
+                    config.headers.token =token;
                 }
                 return config;
             }, function (err) {

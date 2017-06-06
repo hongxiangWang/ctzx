@@ -6,8 +6,9 @@ function resolveDialogNest(id,_this) {
   //console.log(modalZ,modalCell)
 }
 function getAccount() {
-    let account = localStorage.getItem('account');
-    return JSON.parse(account);
+    let store = require('store');
+    let account = store.get('account');
+    return account;
 }
 module.exports.resolveDialogNest = resolveDialogNest;
 module.exports.account = getAccount();

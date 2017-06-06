@@ -195,9 +195,11 @@
         list.forEach(value => {
             json[value.node_id] = value.node_status
         })
-        localStorage.setItem('token',data.token)
+        _this.$localStore.set('token',data.token);
+        //localStorage.setItem('token',data.token)
         json.name = data.people_name;
-        localStorage.setItem('account',JSON.stringify(json))
+        _this.$localStore.set('account',json);
+        //localStorage.setItem('account',JSON.stringify(json))
     }
     //获取URL参数
     function GetQueryString(name) {
