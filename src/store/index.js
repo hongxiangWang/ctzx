@@ -29,7 +29,6 @@ const state = {
         submitData: {},
         clientData: {},
     },
-    account:getAccount()
 }
 
 function getAccount() {

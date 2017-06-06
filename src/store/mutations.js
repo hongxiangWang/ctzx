@@ -97,10 +97,6 @@ export default {
     },
     [RECORD_CLENTDATE](state, payload){
         state.recordTable.clientData = payload;
-    },
-    [UPDATE_ACCOUT](state, payload){
-        //state.account = payload;
-        localStorage.setItem("account",JSON.stringify(payload));
-    },
+    }
 
 }

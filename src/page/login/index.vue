@@ -197,7 +197,7 @@
         })
         localStorage.setItem('token',data.token)
         json.name = data.people_name;
-        _this.$store.commit('UPDATE_ACCOUT', json);
+        localStorage.setItem('account',JSON.stringify(json))
     }
     //获取URL参数
     function GetQueryString(name) {

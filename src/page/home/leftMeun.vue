@@ -78,7 +78,7 @@
             },
         },
         mounted(){
-            this.account = JSON.parse(this.$store.state.account);
+            this.account = require('../../helper/helper').account;
         }
     }
     import '../../style/menu.css'

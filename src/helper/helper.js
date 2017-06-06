@@ -5,4 +5,9 @@ function resolveDialogNest(id,_this) {
   _this.$jquery("#searchInfo #"+id+"").css('z-index',modalZ);
   //console.log(modalZ,modalCell)
 }
+function getAccount() {
+    let account = localStorage.getItem('account');
+    return JSON.parse(account);
+}
 module.exports.resolveDialogNest = resolveDialogNest;
+module.exports.account = getAccount();

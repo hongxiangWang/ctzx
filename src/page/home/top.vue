@@ -25,7 +25,7 @@
   export default{
       computed:{
           name(){
-              return (JSON.parse(this.$store.state.account)).name
+              return this.account = require('../../helper/helper').account.name;
           }
       }
   }

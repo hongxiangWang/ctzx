@@ -213,7 +213,7 @@
         },
         mounted(){
 
-            this.account = JSON.parse(this.$store.state.account);
+            this.account = require('../../helper/helper').account;
             this.$nextTick(() => {
                 this.$jquery('#cellDialog .el-dialog__headerbtn').click(() => {
                     this.$emit('close');
