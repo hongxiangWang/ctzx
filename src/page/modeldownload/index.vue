@@ -31,10 +31,22 @@
     methods:{
       anquanshu(){
           let u ='/static/examplefile/safe_file.doc';
-          let token =  localStorage.getItem('token');
-          window.open("http://135.224.181.52/telecom/admin/file/fileread?url="+ u+"&token="+token)
+          let token =  require('store').get('token');
+          //window.open("http://135.224.181.52/telecom/admin/file/fileread?url="+ u+"&token="+token)
+          downloadFile(encodeURI(require('../../value/string.js').fileread+ u+"&token="+token))
       }
     }
+
+  }
+  function downloadFile(url) {
+      try{
+          var elemIF = document.createElement("iframe");
+          elemIF.src = url;
+          elemIF.style.display = "none";
+          document.body.appendChild(elemIF);
+      }catch(e){
+
+      }
   }
 
 </script>

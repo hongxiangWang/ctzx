@@ -16,6 +16,7 @@
                                 <el-option label="发起时间" value="2"></el-option>
                                 <el-option label="发起人" value="3"></el-option>
                                 <el-option label="客户名称" value="4"></el-option>
+                                <el-option label="流水号" value="5"></el-option>
                             </el-select>
                         </div>
                         <el-button slot="append" icon="search" @click="searchResult"></el-button>
@@ -30,12 +31,27 @@
 
         </div>
 
+        <h5 style="margin: 0.5rem 0;padding: 0" v-show="searchTime!=null">搜索结果：共计<span style="color: red;">&nbsp;{{tableData3.length}}&nbsp;</span>条&nbsp;&nbsp;&nbsp;&nbsp;
+            搜索结果时间：{{searchTime}}</h5>
+
         <el-table
                 :data="tableData3"
                 max-height="500"
+                v-loading="tableLoading"
+                element-loading-text="拼命加载中"
                 border
                 @row-click="rowClick"
                 style="width: 100%">
+            <el-table-column
+                    class-name="tableIndex"
+                    type="index"
+                    width="60">
+            </el-table-column>
+            <el-table-column
+                    prop="serial_number"
+                    label="流水号"
+                    width="190">
+            </el-table-column>
             <el-table-column
                     prop="client_name"
                     label="客户名称"
@@ -51,7 +67,7 @@
                     label="拟稿时间">
             </el-table-column>
             <el-table-column
-                    prop="make_date"
+                    prop="city"
                     label="本地网">
             </el-table-column>
         </el-table>
@@ -73,7 +89,7 @@
     export default {
         data(){
             return {
-                account:{},
+                account: {},
                 ajaxdata: {},
                 searchCon: '',
                 selectBusinessType: '',
@@ -83,6 +99,8 @@
                 dialogTableVisible: false,
                 tableData3: [],
                 excelDisable: true,
+                searchTime: null,
+                tableLoading:false
             }
         },
         methods: {
@@ -94,9 +112,11 @@
                 }
                 this.$ajax.post('/business/businessexportexcel', params).then(response => {
                     console.log(response.data);
-                    let u = response.data.data.url.replace('/app/project/telecom/www','');
-                    let token = localStorage.getItem('token');
-                    window.open("http://135.224.181.52/telecom/admin/file/fileread?url="+ u+"&token="+token)
+                    let u = response.data.data.url.replace('/app/project/telecom/www', '');
+                    let token = this.$localStore.get('token');
+                    //window.open("http://135.224.181.52/telecom/admin/file/fileread?url="+ u+"&token="+token)
+
+                    downloadFile(encodeURI(require('../../value/string.js').fileread + u + "&token=" + token));
                 }).catch(error => {
                     console.log(error.message)
                 })
@@ -112,7 +132,7 @@
             selectConTypeChange(call){
                 console.log(call)
                 if (call == 2) {
-                    this.$message({message: '请按照年-月格式，如2017-5-17', type: 'warning'})
+                    this.$message({message: '请按照年-月格式，如2017-05-01', type: 'warning'})
                 }
             },
             searchResult(){
@@ -133,29 +153,30 @@
                     this.$message({message: '请选择搜索内容', type: 'error'});
                     return;
                 }
-
+                let date = new Date();
+                let time = date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate() + "    " + dealNumber(date.getHours()) + ":" + dealNumber(date.getMinutes())
+                this.tableLoading = true;
                 this.$ajax.post('business/searchbusinessbyall', params).then(response => {
                     console.log('55555---', response.data)
+                    this.tableLoading = false;
                     this.tableData3 = response.data.data.data;
-
+                    this.searchTime = time;
                     if (response.data.data.data.length > 0) {
                         this.excelDisable = false;
                     } else {
                         this.excelDisable = true;
                     }
-                }).catch(error => {
-                    console.log('error---', error.message)
+                }).catch((error) => {
+                    this.tableLoading = false;
+                    this.searchTime = time;
+                    console.log('error---', error)
                 })
             }
 
         },
-        computed: {
-            showExcelBtn(){
-                return this.$store.state.account['4'] == 0 ? true : false;
-            }
-        },
+        computed: {},
         mounted(){
-            this.account = require('../../helper/helper').account;
+            this.account = require('store').get('account');
         },
         components: {
             infoDialog
@@ -163,9 +184,22 @@
 
     }
 
-    function excel() {
-        console.log('1111111xcdcd');
+    function downloadFile(url) {
+        try {
+            var elemIF = document.createElement("iframe");
+            elemIF.src = url;
+            elemIF.style.display = "none";
+            document.body.appendChild(elemIF);
+        } catch (e) {
 
+        }
+    }
+
+    function dealNumber(n) {
+        if(Number(n)<10){
+            return '0'+n;
+        }
+        return n;
 
     }
 

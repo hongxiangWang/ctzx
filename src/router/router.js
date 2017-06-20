@@ -1,5 +1,6 @@
 import App from '../App.vue'
 import {getCookie} from '../api/cookie'
+const login = r => require.ensure([], () => r(require('../page/login/index.vue')), 'login');
 const home = r => require.ensure([], () => r(require('../page/home/index.vue')), 'home');
 const record = r => require.ensure([], () => r(require('../page/record/index.vue')), 'record');
 const chooseType = r => require.ensure([], () => r(require('../page/record/chooseType.vue')), 'chooseType');
@@ -8,7 +9,7 @@ const uploadFile = r => require.ensure([], () => r(require('../page/record/uploa
 const search = r => require.ensure([], () => r(require('../page/search/index.vue')), 'search');
 const approve = r => require.ensure([], () => r(require('../page/approve/index.vue')), 'approve');
 const statistics = r => require.ensure([], () => r(require('../page/statistics/index.vue')), 'statistics');
-const mange_home = r => require.ensure([], () => r(require('../manage_pages/mange_home/manageHome.vue')), 'mange_home');
+const mangeHome = r => require.ensure([], () => r(require('../manage_pages/mange_home/manageHome.vue')), 'mange_home');
 const meunFunSet = r => require.ensure([], () => r(require('../manage_pages/system/meunFunctionSetting.vue')), 'meunFunSet');
 const userSet = r => require.ensure([], () => r(require('../manage_pages/system/userSet.vue')), 'userSet');
 const permissionSet = r => require.ensure([], () => r(require('../manage_pages/system/permissionSetting.vue')), 'permissionSet');
@@ -20,10 +21,10 @@ export default [{
     children: [{
         path: '/',
         // 使用vue-route + Webpack 的 code splitting feature 把组件按组分块
-        component: r => require.ensure([], () => r(require('../page/login/index.vue')), 'login')
+        component: login
     }, {
         path: '/index',
-        component: r => require.ensure([], () => r(require('../page/home/index.vue')), 'index')
+        component: home
     }, {
         path: '/home',
         component: home,
@@ -33,15 +34,6 @@ export default [{
             children: [{
                 path: "chooseType",
                 component: chooseType,
-                // beforeEnter: (to, from, next) => {
-                //   let c = require('../api/cookie')
-                //   if(c.getCookie('login')==null){
-                //     next('/');
-                //   }else{
-                //     next();
-                //   }
-                //
-                // }
             }, {
                 path: "filltable",
                 component: filltable
@@ -63,8 +55,8 @@ export default [{
             component: statistics
         }]
     }, {
-        path: 'mange_home',
-        component: mange_home,
+        path: '/mangeHome',
+        component: mangeHome,
         children: [{
             path: 'meunFunSet',
             component: meunFunSet

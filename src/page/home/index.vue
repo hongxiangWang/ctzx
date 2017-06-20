@@ -30,36 +30,51 @@
             this.$router.replace('/home/record')
         },
         mounted(){
+            let _this = this;
             this.$ajax.interceptors.request.use(function (config) {
                 //在请求发出之前进行一些操作
-                let token = this.$localStore.get('token');
+                let token = _this.$localStore.get('token');
                 if (token) {
-                    config.headers.token =token;
+                    config.headers.token = token;
                 }
                 return config;
             }, function (err) {
                 //Do something with request error
-                return Promise.reject(error);
+                return Promise.reject(err);
             });
 
             this.$ajax.interceptors.response.use(function (res) {
                 //在这里对返回的数据进行处理
                 if (Number(res.data.errno) == 1000) {
-                    this.$router.replace('/')
+                    _this.$router.replace('/')
                     return;
                 }
                 return res;
             }, function (err) {
                 //Do something with response error
-                this.$message({message:'等待无应答',type:'warning'})
-                return Promise.reject(error);
+                return Promise.reject(err);
+            })
+
+            //获取地州列表
+            this.$ajax.post('area/arealist', '').then(response => {
+
+                if (response.data.errno != 0) {
+                    return;
+                }
+//                let areaArr = [];
+//                response.data.data.forEach(value => {
+//                    areaArr.push(value.area_name);
+//                });
+                this.$localStore.set("areaArr", response.data.data);
+            }).catch(error => {
+                console.log(error)
             })
         }
 
     }
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
     #home {
         padding: 0;
         margin: 0;

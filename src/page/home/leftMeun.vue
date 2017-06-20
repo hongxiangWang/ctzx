@@ -41,6 +41,7 @@
     </el-row>
 </template>
 <script>
+    import '../../style/menu.css'
     export default {
         data() {
             return {
@@ -78,10 +79,10 @@
             },
         },
         mounted(){
-            this.account = require('../../helper/helper').account;
+            this.account = require('store').get('account');
         }
     }
-    import '../../style/menu.css'
+
 
 </script>
 

@@ -1,5 +1,5 @@
 <template>
-  <div class="top-meun">
+  <div class="manage-top">
     <el-row>
       <el-col :span="16">
         <div class="grid-content bg-purple">
@@ -11,10 +11,12 @@
             <small>v1.0 OBT</small>
           </p>
         </div>
+
       </el-col>
 
       <el-col :span="8">
         <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" id="meunTop">
+          <el-button type="text" @click="$router.push('/home')" style="color:white;margin-top: 1rem">回到前台</el-button>
           <el-menu-item index="1" @click="systemMeun">系统管理</el-menu-item>
           <el-menu-item index="2"@click="processMeun">流程管理</el-menu-item>
         </el-menu>
@@ -23,8 +25,6 @@
   </div>
 </template>
 <script>
-  import '../../font/iconfont.js'
-  import '../../style/manage-top-meun.less'
   export default{
     data(){
       return {
@@ -45,9 +45,5 @@
 </script>
 
 <style lang="less">
-  #meunTop{
-    text-align: end;
-    float: right;
-    padding-right: 5%;
-  }
+
 </style>

@@ -1,14 +1,14 @@
 <template>
     <div id="login">
-        <div id="query_entry">
-            <el-button type="primary"><i class="el-icon-search"></i>快速查询</el-button>
-            <el-button type="primary">
-                <svg class="icon" aria-hidden="true">
-                    <use xlink:href="#icon-model-download"></use>
-                </svg>
-                模板下载
-            </el-button>
-        </div>
+        <!--<div id="query_entry">-->
+            <!--<el-button type="primary"><i class="el-icon-search"></i>快速查询</el-button>-->
+            <!--<el-button type="primary">-->
+                <!--<svg class="icon" aria-hidden="true">-->
+                    <!--<use xlink:href="#icon-model-download"></use>-->
+                <!--</svg>-->
+                <!--模板下载-->
+            <!--</el-button>-->
+        <!--</div>-->
         <p>
             <svg class="icon" aria-hidden="true">
                 <use xlink:href="#icon-ctlogo"></use>
@@ -55,13 +55,13 @@
         data() {
             var validatePass = (rule, value, callback) => {
                 if (value === '') {
-                    callback(new Error('请输入手机号'));
+                    callback(new Error('请输入协同账号'));
                 } else {
                     //&& (/^1[34578]\d{9}$/.test(this.ruleForm2.phone))
                     if (this.ruleForm2.phone !== '') {
                         callback();
                     } else {
-                        callback(new Error('请输入正确的手机号'));
+                        callback(new Error('请输入协同密码'));
                     }
                 }
             };
@@ -152,16 +152,15 @@
                 account: account,
                 token: token,
             }
-            if(account == null){
+            if (account == null) {
                 return;
             }
-            console.log(params);
             this.$ajax.post('/user/logintoken', params).then(response => {
                 switch (Number(response.data.data.flg)) {
                     case 0 :
                         getAccount(this, response.data.data);
-                       //this.$router.replace('/home');
-                        let url = window.location.host +'/home'
+                        //this.$router.replace('/home');
+                        let url = window.location.host + '/home'
                         window.location.replace('/dist/#/home');
                         break;
                     default:
@@ -195,11 +194,13 @@
         list.forEach(value => {
             json[value.node_id] = value.node_status
         })
-        _this.$localStore.set('token',data.token);
-        //localStorage.setItem('token',data.token)
+        _this.$localStore.set('token', data.token);
         json.name = data.people_name;
-        _this.$localStore.set('account',json);
-        //localStorage.setItem('account',JSON.stringify(json))
+        json.loginName = data.loginName;
+        json.dept_id = data.dept_id;
+        json.dept_name = data.dept_name;
+        console.log('000000000',json);
+        _this.$localStore.set('account', json);
     }
     //获取URL参数
     function GetQueryString(name) {

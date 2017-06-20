@@ -2,7 +2,7 @@
   <div id="record_filltable">
     <el-form :model="ruleForm" :rules="rules" ref="ruleForm" label-width="190px">
 
-      <div v-show="showItem.show400">
+      <div v-if="showItem.show400">
         <el-row>
           <el-col :span="12">
             <el-form-item label="400号码" prop="tel_number" :rules="rules.notEmptyRule">
@@ -35,7 +35,7 @@
         </el-row>
       </div>
 
-      <div width="100%" v-show="showItem.showTable">
+      <div width="100%" v-if="showItem.showTable">
         <item
           ref="allItem"
           v-for="(item,index) in ruleForm.son"
@@ -62,10 +62,10 @@
             <el-select v-model="ruleForm.city" placeholder="请选择">
               <el-option
                 v-for="item in cities"
-                :label="item.name"
-                :value="item.name">
-                <span style="float: left">{{ item.name }}</span>
-                <span style="float: right; color: #8492a6; font-size:10px">{{ item.name }}</span>
+                :label="item.area_name"
+                :value="item.area_name">
+                <span style="float: left">{{ item.area_name }}</span>
+                <span style="float: right; color: #8492a6; font-size:10px">{{ item.area_code }}</span>
               </el-option>
             </el-select>
           </el-form-item>
@@ -153,22 +153,7 @@
         </el-col>
       </el-row>
 
-      <el-row>
-        <el-col :span="12">
-          <el-form-item label="编辑人工号" prop="edit_people_card" :rules="rules.notEmptyRule">
-            <el-input v-model="ruleForm.edit_people_card" placeholder="请输入内容"></el-input>
-          </el-form-item>
-        </el-col>
-        <el-col :span="11" :push="1" :rules="rules.notEmptyRule">
-          <el-form-item label="编辑时间" prop="edit_time" label-width="100px">
-            <el-date-picker
-              v-model="ruleForm.edit_time"
-              type="date"
-              placeholder="选择日期时间">
-            </el-date-picker>
-          </el-form-item>
-        </el-col>
-      </el-row>
+
 
       <el-row>
         <el-col :span="12">
@@ -195,6 +180,7 @@
             <el-date-picker
               v-model="ruleForm.contract_maketime"
               type="date"
+              :editable="false"
               placeholder="选择日期时间">
             </el-date-picker>
           </el-form-item>
@@ -209,8 +195,13 @@
           </el-form-item>
         </el-col>
         <el-col :span="11" :push="1">
-          <el-form-item label="证件有效期" prop="create_people_dept" label-width="100px" :rules="rules.notEmptyRule">
-            <el-input v-model="ruleForm.create_people_dept" placeholder="请输入内容"></el-input>
+          <el-form-item label="证件有效期" prop="card_validity_time" label-width="100px" :rules="rules.notEmptyRule">
+            <el-date-picker
+                    v-model="ruleForm.card_validity_time"
+                    type="date"
+                    :editable="false"
+                    placeholder="选择日期时间">
+            </el-date-picker>
           </el-form-item>
         </el-col>
       </el-row>
@@ -241,6 +232,26 @@
         </el-col>
       </el-row>
 
+
+      <el-row>
+        <el-col :span="12">
+          <el-form-item label="编辑人工号" prop="edit_people_card" :rules="rules.notEmptyRule" >
+            <el-input v-model="ruleForm.edit_people_card" placeholder="请输入内容" :disabled="true"></el-input>
+          </el-form-item>
+        </el-col>
+        <el-col :span="11" :push="1" :rules="rules.notEmptyRule">
+          <el-form-item label="编辑时间" prop="edit_time" label-width="100px">
+            <el-date-picker
+                    v-model="ruleForm.edit_time"
+                    type="date"
+                    :editable="false"
+                    placeholder="选择日期时间">
+            </el-date-picker>
+          </el-form-item>
+        </el-col>
+      </el-row>
+
+
       <el-row>
         <el-col :span="12">
           <el-form-item label="拟稿日期">
@@ -263,7 +274,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="11" :push="1">
-          <el-form-item label="坐席数量" v-show="showItem.show_seats" label-width="100px">
+          <el-form-item label="坐席数量" v-if="showItem.show_seats" label-width="100px">
             <el-input v-model="ruleForm.seats_num" placeholder="请输入内容" type="number"></el-input>
           </el-form-item>
         </el-col>
@@ -289,7 +300,7 @@
           tableNeedSelectRule: null,
           agencyIdCardRule: agencyIdCard,
         },
-        cities: city.sub,
+        cities: this.$localStore.get('areaArr'),
         showItem: [],
         son: [
           {tel: ''},
@@ -391,8 +402,8 @@
         switch (type) {
           case 1:
             this.showItem = isShowType1;
-            this.ruleForm.tel_number = 'null';
-            this.ruleForm.first_purpose_code = 'null';
+            this.ruleForm.tel_number = '';
+            this.ruleForm.first_purpose_code = '';
             this.rules.tableNotEmptyRule = notEmpty;
             this.rules.tableNeedSelectRule = needSelect;
             break;
@@ -403,8 +414,8 @@
             break;
           case 3:
             this.showItem = isShowType3;
-            this.ruleForm.tel_number = 'null';
-            this.ruleForm.first_purpose_code = 'null';
+            this.ruleForm.tel_number = '';
+            this.ruleForm.first_purpose_code = '';
             this.rules.tableNotEmptyRule = notEmpty;
             this.rules.tableNeedSelectRule = needSelect;
             break;

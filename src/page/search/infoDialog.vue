@@ -8,7 +8,11 @@
                 v-if="account[2]==0"
                 @click="entryEditModel"
                 style="margin-left: 3rem"
-                :class="entryEditModelClass">{{isEntryEditModelText}}</el-button></span>
+                :class="entryEditModelClass">{{isEntryEditModelText}}</el-button>
+          <span v-if="isEntryEditModel" style="color:#ff7e7e;margin-left: 2rem">点击每项的标题，弹出修改窗口</span>
+       <small style="display: block;margin: 1rem 0; color:#8492A6">1、带*表示的项为必填项，若为空，请添加。2、若语音中继的使用用途为"呼叫中心"，请上传附件"呼叫中心资质"。</small>
+      </span>
+
             <cell
                     v-for="(item,index) in itemTitle"
                     :title="item"
@@ -17,7 +21,9 @@
                     :dataJson='info'
                     @cellFileOpen='cellFileOpen'
                     @editInfo="editInfo"></cell>
-            <h4 v-show="(info!='' && info.sundata.length>0)">线路信息：</h4>
+            <h4 v-if="(info!='' && info.sundata.length>0)">线路信息：共计<span
+                    style="color:orangered;">{{info.sundata.length}}</span>条线路
+            </h4>
             <div v-for="(v,i) in info.sundata" id="sundata">
                 <cell
                         v-for="(item,index) in itemSonTitle"
@@ -116,7 +122,7 @@
                 helper.resolveDialogNest('cellDialog', this);
             },
             cellFileOpen(data){
-                console.log('00000----')
+                console.log('00000----',data)
                 this.cellDialogVisible = true;
                 this.celldata = data;
                 helper.resolveDialogNest('cellDialog', this);
@@ -139,13 +145,17 @@
                             o == call.key ? call.title = v[o] : null;
                         }
                     });
+                    if(Number(this.businessType)!=2 && call.key =='tel_number'){
+                        call.title = '中继号码/计费号码'
+                    }
                     if (call.sonId != undefined) {
                         call.value = this.info.sundata[call.sonIndex][call.key];
-                        call.type = getType(call.key);
+                        call.type = getType(call.key, call.value, this);
                         call.value = reviseValue(call.value, call.type, call);
                     } else {
+
                         call.value = this.info[call.key];
-                        call.type = getType(call.key);
+                        call.type = getType(call.key, call.value, this);
                         call.value = reviseValue(call.value, call.type, call);
                     }
                     this.cellFileOpen(call);
@@ -174,7 +184,6 @@
                 if (call.sonId != undefined) {
                     params.son_id = call.sonId;
                     this.$ajax.post('/business/editbusiness', params).then(response => {
-                        console.log('---editbusiness-----success--', response.data);
                         if (Number(response.data.data.flg) == 0) {
                             this.info.sundata[call.sonIndex][call.key] = call.value;
                             this.$message({message: '修改成功', type: 'success'});
@@ -182,7 +191,6 @@
                             this.$message({message: '修改失败，请稍后重试', type: 'error'});
                         }
                     }).catch(error => {
-                        console.log('---editbusiness-----success--', error.message);
                         this.$message({message: '无法获取数据', type: 'error'});
                     })
 
@@ -190,7 +198,6 @@
                     console.log('----', JSON.stringify(params))
 
                     this.$ajax.post('/business/editbusiness', params).then(response => {
-                        console.log('---editbusiness-----success--', response.data);
                         if (Number(response.data.data.flg) == 0) {
                             console.log('---editbusiness-----success--', this.info[call.key]);
                             console.log('---editbusiness-----3333--', params.change_data);
@@ -212,8 +219,7 @@
             cell, cellConDialog
         },
         mounted(){
-
-            this.account = require('../../helper/helper').account;
+            this.account = require('store').get('account');
             this.$nextTick(() => {
                 this.$jquery('#cellDialog .el-dialog__headerbtn').click(() => {
                     this.$emit('close');
@@ -245,7 +251,11 @@
 
     }
 
-    function getType(key) {
+    function getType(key, value, vm) {
+        console.log(value)
+        if ((vm.account[6] === undefined || vm.account[6] != 0) && (value!=null && value.replace(/(^\s+)|(\s+$)/g, "") != '')) {
+            return itemType['noEdit']
+        }
         if (inputItem.indexOf(key) >= 0) {
             return itemType['input']
         }
@@ -270,7 +280,7 @@
         switch (Number(type)) {
             case 3:
                 if (value == undefined || value == "") {
-                    return Date();
+                    return new Date();
                 }
                 return new Date(value.replace(/-/g, "/"));
                 break;

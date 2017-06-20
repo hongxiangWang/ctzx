@@ -6,7 +6,7 @@ const publicPath = ''
 
 module.exports = (options = {}) => ({
     entry: {
-        vendor: './src/vendor',
+        vendor: './src/vendor.js',
         index:["babel-polyfill", "./src/main.js"]
     },
     output: {

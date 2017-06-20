@@ -1,6 +1,6 @@
 <template>
   <div id="select-type">
-    <label>选择类型&nbsp;&nbsp;</label>
+    <label style="height: 40px; line-height: 40px">选择类型&nbsp;&nbsp;</label>
     <el-select v-model="value5" filterable placeholder="请选择" @change="optionClick" >
       <el-option
         v-for="item in options"

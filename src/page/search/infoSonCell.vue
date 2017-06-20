@@ -52,7 +52,7 @@
       fileCilck(index){
         let u = this.realUrl[index];
         let token = localStorage.getItem('token');
-        this.dialogImageUrl = "http://135.224.181.52/telecom/admin/file/fileread?url="+ u+"&token="+token;
+        this.dialogImageUrl = require('../../value/string.js').fileread+ u+"&token="+token;
         console.log('-----',this.dialogImageUrl);
         this.fileName = this.realName[index];
         this.dialogVisible = true;

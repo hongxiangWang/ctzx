@@ -36,16 +36,16 @@
     },
     methods: {
       meunFunSet(){
-        this.$router.replace('/mange_home/meunFunSet')
+        this.$router.replace('/mangeHome/meunFunSet')
       },
       userSet(){
-        this.$router.replace('/mange_home/userSet')
+        this.$router.replace('/mangeHome/userSet')
       },
       permissionSet(){
-        this.$router.replace('/mange_home/permissionSet')
+        this.$router.replace('/mangeHome/permissionSet')
       },
       roleManage(){
-        this.$router.replace('/mange_home/roleManage')
+        this.$router.replace('/mangeHome/roleManage')
       }
     }
   }

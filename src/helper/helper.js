@@ -11,4 +11,3 @@ function getAccount() {
     return account;
 }
 module.exports.resolveDialogNest = resolveDialogNest;
-module.exports.account = getAccount();

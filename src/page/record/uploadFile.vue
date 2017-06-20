@@ -24,6 +24,7 @@
                         <el-date-picker
                                 v-model="uploadForm.card_validity"
                                 type="date"
+                                :editable="false"
                                 placeholder="选择日期">
                         </el-date-picker>
                     </el-form-item>
@@ -34,7 +35,7 @@
             <el-form-item label="证件附件" prop="card_upfile" label-width="150px">
                 <el-upload
                         ref="upload"
-                        action="http://135.224.181.52/telecom/admin/pic/picupload"
+                        action="http://10.60.59.37/telecom/admin/pic/picupload"
                         :on-preview="handlePreview"
                         :on-remove="cardUpfileRemove"
                         :on-error="error"
@@ -53,7 +54,7 @@
                           v-show="isShowCallCenterCardUpfile">
                 <el-upload
                         ref="upload"
-                        action="http://135.224.181.52/telecom/admin/pic/picupload"
+                        action="http://10.60.59.37/telecom/admin/pic/picupload"
                         :on-preview="handlePreview"
                         :on-remove="callCenterCardUpfileRemove"
                         :on-error="error"
@@ -80,7 +81,7 @@
                     <el-form-item label="经办人身份证附件" prop="write_card_upfile" label-width="150px">
                         <el-upload
                                 ref="upload"
-                                action="http://135.224.181.52/telecom/admin/pic/picupload"
+                                action="http://10.60.59.37/telecom/admin/pic/picupload"
                                 :on-preview="handlePreview"
                                 :on-remove="writeCardUpfileRemove"
                                 :on-error="error"
@@ -99,6 +100,7 @@
                         <el-date-picker
                                 v-model="uploadForm.write_card_validity"
                                 type="date"
+                                :editable="false"
                                 placeholder="选择日期">
                         </el-date-picker>
                     </el-form-item>
@@ -109,7 +111,7 @@
             <el-form-item label="客户单位证明" prop="customer_prove" label-width="150px">
                 <el-upload
                         ref="upload"
-                        action="http://135.224.181.52/telecom/admin/pic/picupload"
+                        action="http://10.60.59.37/telecom/admin/pic/picupload"
                         :on-preview="handlePreview"
                         :on-remove="customerProveRemove"
                         :on-error="error"
@@ -126,7 +128,7 @@
             <el-form-item label="电信业务许可证拍照上传" prop="customer_value_license_file" label-width="150px">
                 <el-upload
                         ref="upload"
-                        action="http://135.224.181.52/telecom/admin/pic/picupload"
+                        action="http://10.60.59.37/telecom/admin/pic/picupload"
                         :on-preview="handlePreview"
                         :on-remove="licenseFileRemove"
                         :on-error="error"
@@ -144,8 +146,7 @@
             <el-form-item label="信息安全承诺书" prop="information_safe_file" label-width="150px">
                 <el-upload
                         ref="upload"
-                        headers="header"
-                        action="http://135.224.181.52/telecom/admin/pic/picupload"
+                        action="http://10.60.59.37/telecom/admin/pic/picupload"
                         :on-preview="handlePreview"
                         :on-remove="informationSafeFileRemove"
                         :on-error="error"
@@ -163,8 +164,7 @@
             <el-form-item label="第一目的码与客户归属关系证明" prop="upload_files" label-width="150px" v-show="showUploadFiles">
                 <el-upload
                         ref="upload"
-                        action="http://135.224.181.52/telecom/admin/pic/picupload"
-                        headers="header"
+                        action="http://10.60.59.37/telecom/admin/pic/picupload"
                         :on-preview="handlePreview"
                         :on-remove="uploadFilesRemove"
                         :on-error="error"
@@ -191,20 +191,17 @@
         data() {
             return {
                 params: {},
-                header:{
-                    token:localStorage.getItem('token').replace(/(^\")|(\"$)/g, '')
-                },
                 uploadForm: {
                     card_type: "",//*证件类型
                     card_num: '',//*证件号码
                     card_upfile: [],//*上传附件
-                    customer_prove: [],//客户单位证明
-                    information_safe_file: [],//信息安全承诺书
+                    customer_prove: [],//*客户单位证明
+                    information_safe_file: [],//*信息安全承诺书
                     call_center_card_upfile: [],//呼叫中心资质附件
                     call_center_code: '',//呼叫中心许可证编码
                     card_validity: "",//证件有效期
-                    write_card_validity: "",//经办人身份证有效期
-                    write_card_upfile: [],//经办人身份证
+                    write_card_validity: "",//*经办人身份证有效期
+                    write_card_upfile: [],//*经办人身份证
                     upload_files: [],//上传：第一目的码与客户归属关系证明
                     customer_value_license_file: [],//电信业务许可证拍照上传（客户申请资源经营电信业务时必填）
                 },

@@ -8,8 +8,8 @@ import 'element-ui/lib/theme-default/index.css'
 import './font/iconfont.js'
 import axios from 'axios'
 import config from './api/config'
-const localStore = require('store')
-const jquery = require('jquery')
+const localStore = require('store');
+const jquery = require('jquery');
 const axiosInit = axios.create(config);
 Vue.use(VueRouter)
 Vue.use(ElementUI)
@@ -24,7 +24,7 @@ const router = new VueRouter({
     routes:routes,
 
 })
-new Vue({
+let app = new Vue({
     el: '#app',
     store,
     router,
@@ -32,3 +32,6 @@ new Vue({
 
 })
 
+export {
+    app
+}

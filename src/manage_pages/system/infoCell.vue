@@ -104,7 +104,6 @@
                     cellData.sonIndex = this.id;
                     cellData.sonId = this.sonId;
                 }
-                console.log('ssssss',cellData)
                 this.$emit('editInfo', cellData)
             }
         }
