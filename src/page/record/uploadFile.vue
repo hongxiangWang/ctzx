@@ -35,7 +35,7 @@
             <el-form-item label="证件附件" prop="card_upfile" label-width="150px">
                 <el-upload
                         ref="upload"
-                        action="http://10.60.59.37/telecom/admin/pic/picupload"
+                        :action="uploadUrl"
                         :on-preview="handlePreview"
                         :on-remove="cardUpfileRemove"
                         :on-error="error"
@@ -54,7 +54,7 @@
                           v-show="isShowCallCenterCardUpfile">
                 <el-upload
                         ref="upload"
-                        action="http://10.60.59.37/telecom/admin/pic/picupload"
+                        :action="uploadUrl"
                         :on-preview="handlePreview"
                         :on-remove="callCenterCardUpfileRemove"
                         :on-error="error"
@@ -81,7 +81,7 @@
                     <el-form-item label="经办人身份证附件" prop="write_card_upfile" label-width="150px">
                         <el-upload
                                 ref="upload"
-                                action="http://10.60.59.37/telecom/admin/pic/picupload"
+                                :action="uploadUrl"
                                 :on-preview="handlePreview"
                                 :on-remove="writeCardUpfileRemove"
                                 :on-error="error"
@@ -111,7 +111,7 @@
             <el-form-item label="客户单位证明" prop="customer_prove" label-width="150px">
                 <el-upload
                         ref="upload"
-                        action="http://10.60.59.37/telecom/admin/pic/picupload"
+                        :action="uploadUrl"
                         :on-preview="handlePreview"
                         :on-remove="customerProveRemove"
                         :on-error="error"
@@ -128,7 +128,7 @@
             <el-form-item label="电信业务许可证拍照上传" prop="customer_value_license_file" label-width="150px">
                 <el-upload
                         ref="upload"
-                        action="http://10.60.59.37/telecom/admin/pic/picupload"
+                        :action="uploadUrl"
                         :on-preview="handlePreview"
                         :on-remove="licenseFileRemove"
                         :on-error="error"
@@ -146,7 +146,7 @@
             <el-form-item label="信息安全承诺书" prop="information_safe_file" label-width="150px">
                 <el-upload
                         ref="upload"
-                        action="http://10.60.59.37/telecom/admin/pic/picupload"
+                        :action="uploadUrl"
                         :on-preview="handlePreview"
                         :on-remove="informationSafeFileRemove"
                         :on-error="error"
@@ -164,7 +164,7 @@
             <el-form-item label="第一目的码与客户归属关系证明" prop="upload_files" label-width="150px" v-show="showUploadFiles">
                 <el-upload
                         ref="upload"
-                        action="http://10.60.59.37/telecom/admin/pic/picupload"
+                        :action="uploadUrl"
                         :on-preview="handlePreview"
                         :on-remove="uploadFilesRemove"
                         :on-error="error"
@@ -191,6 +191,7 @@
         data() {
             return {
                 params: {},
+                uploadUrl:base.uploadUrl,
                 uploadForm: {
                     card_type: "",//*证件类型
                     card_num: '',//*证件号码

@@ -1,4 +1,3 @@
-import ajax from '../config/ajax'
 import axios from 'axios'
 import config from '../api/config'
 const axiosInit = axios.create(config);
@@ -16,7 +15,6 @@ export default {
 
   getRoleFun({commit, state}, prop) {
     axiosInit.post('/access/getuseraccess', {'role_code': prop},{headers:{token:require('store').get('token')}}).then(res => {
-      console.log('999999----',JSON.stringify(res.data))
       let flg = Number(res.data.data.flg);
       switch (flg) {
         case 0:

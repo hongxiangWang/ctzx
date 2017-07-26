@@ -287,7 +287,7 @@
   import {telNum, agencyIdCard, notEmpty, needSelect} from './inputRule.js';
   import {fillCon, isShowType1, isShowType2, isShowType3} from './fillTable.js';
   import item from './formItem.vue'
-  import {city} from '../../asstes/city.js';
+  import {city} from '../../assets/city.js';
   import  '../../style/filltable.less'
   export default {
     data() {

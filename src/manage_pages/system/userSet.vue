@@ -13,7 +13,7 @@
                 <el-col :span="2" :push="4">
                     <el-button type="primary" icon="plus" @click="dialogFormVisible = true">添加用户</el-button>
                 </el-col>
-                <el-col :span="6" :push="8">
+                <el-col :span="6" :push="6">
                     <el-input
                             placeholder="请输入户名进行搜索"
                             icon="delete"
@@ -21,7 +21,7 @@
                             :on-icon-click="handleSearchIconClick">
                     </el-input>
                 </el-col>
-                <el-col :span="2" :push="8" id="search">
+                <el-col :span="2" :push="6" id="search">
                     <el-button type="primary" icon="search" @click="searchButtonClick">搜索
                     </el-button>
                 </el-col>
@@ -107,9 +107,9 @@
                 :before-close="handleClose">
             <span>这是一段信息</span>
             <span slot="footer" class="dialog-footer">
-    <el-button @click="dialogVisible = false">取 消</el-button>
-    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
-  </span>
+                <el-button @click="dialogVisible = false">取 消</el-button>
+                <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+            </span>
         </el-dialog>
 
         <!--<el-pagination-->
@@ -232,9 +232,9 @@
                     this.tableData = respons.data.data.data;
                     this.tableLoading = false;
                 }).catch((error) => {
-                    this.$message({message: '获取信息失败' + error.message, type: 'error'})
-                    this.tableData = [];
-                    this.tableLoading = false;
+                this.$message({message: '获取信息失败' + error.message, type: 'error'})
+                this.tableData = [];
+                this.tableLoading = false;
             })
         },
         computed: {}

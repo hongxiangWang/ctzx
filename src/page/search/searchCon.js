@@ -96,7 +96,7 @@ const itemType = {
 }
 //下拉选线的值，不包括city
 
-import {city} from '../../asstes/city';
+import {city} from '../../assets/city';
 const selectItemOption = {
     "card_type": ["营业执照", "组织机构代码", "三证合一", "其他"],
     "where_use": ["自用", "经营呼叫中心","平台代理","经营外包呼叫中心"],

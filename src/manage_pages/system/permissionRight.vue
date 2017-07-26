@@ -76,8 +76,8 @@
                     role_code: role_code,
                     access_data: accessData
                 }
-                console.log('allNodeId', JSON.stringify(accessData));
-                return;
+                console.log('allNodeId', JSON.stringify(params));
+
                 this.$ajax.post('/access/updateaccess', params).then(response => {
                     if (Number(response.data.data.flg) == 0) {
                         this.$message({message: '保存成功', type: 'success'})

@@ -15,11 +15,11 @@
 
             <el-col :span="8" :push="0">
                 <div class="grid-content bg-purple">
-                    <p id="accout">{{name}}，下午好 &nbsp;&nbsp;
+                    <p id="accout">{{name}}，您好 &nbsp;&nbsp;
                         <el-button
                                 type="text"
                                 @click="backstage"
-                        v-if="account[6]==0">进入后台管理</el-button>
+                        v-if="account[7]==0">进入后台管理</el-button>
                         &nbsp;&nbsp;
                         <u id="exit" @click="exit">[注销]</u>
 

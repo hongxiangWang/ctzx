@@ -1,0 +1,46 @@
+@baseColor: #003366;
+#approve {
+
+
+  .spilct {
+    margin: 0px;
+    background-color: fade(@baseColor, 10%);
+    position: relative;
+    height: 60px;
+    border: 0;
+    z-index: 2;
+    padding-left: 5px;
+    box-shadow: 0 1px 6px rgba(0,0,0,.3) ;
+    .el-button {
+      width: 120px;
+      margin: -2px;
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0px;
+      height: 40px;
+      box-shadow: 0 0 3px rgba(0,0,0,.4);
+      z-index: -1;
+      position: relative;
+      bottom:-15px;
+
+    }
+    .active {
+      height: 50px;
+      position: relative;
+      bottom:-10px;;
+      background-color: fade(@baseColor, 90%);
+      border: none;
+      z-index: 3;
+
+    }
+  }
+
+  #steps {
+    margin: 0 auto;
+
+    .el-step__main {
+      width: 90%;
+      display: inline-block;
+    }
+
+  }
+}

@@ -11,6 +11,7 @@ import config from './api/config'
 const localStore = require('store');
 const jquery = require('jquery');
 const axiosInit = axios.create(config);
+
 Vue.use(VueRouter)
 Vue.use(ElementUI)
 //添加一个请求拦截器

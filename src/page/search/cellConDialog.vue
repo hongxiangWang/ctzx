@@ -53,7 +53,7 @@
             <div v-if="cellData.type!= undefined && cellData.type == 5">
                 <el-upload
                         ref="upload"
-                        action="http://10.60.59.37/telecom/admin/pic/picupload"
+                        :action="uploadUrl"
                         :file-list="cellData.value"
                         :on-success="fileUploadfSuccess"
                         :on-remove="fileRemove"
@@ -80,7 +80,7 @@
     </el-dialog>
 </template>
 <script>
-    import {city} from '../../asstes/city.js';
+    import {city} from '../../assets/city.js';
     import {selectItemOption, dateItem, requiredItem} from './searchCon.js'
     const base = require('../../value/string.js');
     let isClearAll = false;
@@ -91,7 +91,7 @@
                 selectItemOption: selectItemOption,
                 fileList: [],
                 city: require('store').get('areaArr'),
-                uploadUrl: 'http://135.224.181.52/admin/pic/picupload',
+                uploadUrl: base.uploadUrl,
                 rules: [],
                 requestTips: false
             }

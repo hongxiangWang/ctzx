@@ -98,10 +98,7 @@
                             loginPwd: this.ruleForm2.checkPass
                         }
 
-                        const ck = require('../../api/cookie')
                         this.$ajax.post('user/login', params).then(response => {
-                            let c = require('../../api/cookie');
-
                             console.log(response.data.data);
                             switch (Number(response.data.data.flg)) {
                                 case 0 :
@@ -199,7 +196,7 @@
         json.loginName = data.loginName;
         json.dept_id = data.dept_id;
         json.dept_name = data.dept_name;
-        console.log('000000000',json);
+        json.role_code = data.access_list[0].role_code;
         _this.$localStore.set('account', json);
     }
     //获取URL参数

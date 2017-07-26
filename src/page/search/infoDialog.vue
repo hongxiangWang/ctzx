@@ -1,16 +1,27 @@
 <template>
     <div id='searchInfo' ref="searchInfo">
-        <el-dialog id='cellDialog' :visible="dialogTableVisible" @click="closeDialog" :close-on-press-escape="false"
-                   size="large">
+        <el-dialog
+                id='cellDialog'
+                :visible="dialogTableVisible"
+                @click="closeDialog"
+                :close-on-press-escape="false"
+                :before-close="tableInfoClose"
+                size="large">
+
       <span slot="title">
         {{title}}
-        <el-button
-                v-if="account[2]==0"
-                @click="entryEditModel"
-                style="margin-left: 3rem"
-                :class="entryEditModelClass">{{isEntryEditModelText}}</el-button>
-          <span v-if="isEntryEditModel" style="color:#ff7e7e;margin-left: 2rem">点击每项的标题，弹出修改窗口</span>
-       <small style="display: block;margin: 1rem 0; color:#8492A6">1、带*表示的项为必填项，若为空，请添加。2、若语音中继的使用用途为"呼叫中心"，请上传附件"呼叫中心资质"。</small>
+          <span v-if="!showEditBtn">
+            <el-button
+                    v-if="account[2]==0"
+                    @click="entryEditModel"
+                    style="margin-left: 3rem"
+                    :class="entryEditModelClass">{{isEntryEditModelText}}</el-button>
+              <span v-if="isEntryEditModel && isShowEdit" style="color:#ff7e7e;margin-left: 2rem">点击每项的标题，弹出修改窗口</span>
+                <small style="display: block;margin: 1rem 0; color:#8492A6">
+                    <span style="color:orangered" v-if="account[6]==0 ">注意您已经具有所有字段修改权限，请勿将您的账号下放。</span>
+                    1、带*表示的项为必填项，若为空，请添加。2、若语音中继的使用用途为"呼叫中心"，请上传附件"呼叫中心资质"。
+                </small>
+          </span>
       </span>
 
             <cell
@@ -102,6 +113,7 @@
             dialogTableVisible: Boolean,
             title: String,
             businessType: String,
+            showEditBtn:Boolean,
         },
         computed: {
             entryEditModelClass(){
@@ -121,8 +133,11 @@
                 this.cellDialogVisible = false;
                 helper.resolveDialogNest('cellDialog', this);
             },
+            tableInfoClose(){
+                this.$emit('close');
+            },
             cellFileOpen(data){
-                console.log('00000----',data)
+                console.log('00000----', data)
                 this.cellDialogVisible = true;
                 this.celldata = data;
                 helper.resolveDialogNest('cellDialog', this);
@@ -145,7 +160,7 @@
                             o == call.key ? call.title = v[o] : null;
                         }
                     });
-                    if(Number(this.businessType)!=2 && call.key =='tel_number'){
+                    if (Number(this.businessType) != 2 && call.key == 'tel_number') {
                         call.title = '中继号码/计费号码'
                     }
                     if (call.sonId != undefined) {
@@ -253,7 +268,7 @@
 
     function getType(key, value, vm) {
         console.log(value)
-        if ((vm.account[6] === undefined || vm.account[6] != 0) && (value!=null && value.replace(/(^\s+)|(\s+$)/g, "") != '')) {
+        if ((vm.account[6] === undefined || vm.account[6] != 0) && (value != null && value.replace(/(^\s+)|(\s+$)/g, "") != '')) {
             return itemType['noEdit']
         }
         if (inputItem.indexOf(key) >= 0) {
@@ -311,3 +326,5 @@
         }
     }
 </script>
+
+

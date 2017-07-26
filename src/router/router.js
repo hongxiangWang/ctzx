@@ -1,5 +1,4 @@
 import App from '../App.vue'
-import {getCookie} from '../api/cookie'
 const login = r => require.ensure([], () => r(require('../page/login/index.vue')), 'login');
 const home = r => require.ensure([], () => r(require('../page/home/index.vue')), 'home');
 const record = r => require.ensure([], () => r(require('../page/record/index.vue')), 'record');
@@ -9,6 +8,7 @@ const uploadFile = r => require.ensure([], () => r(require('../page/record/uploa
 const search = r => require.ensure([], () => r(require('../page/search/index.vue')), 'search');
 const approve = r => require.ensure([], () => r(require('../page/approve/index.vue')), 'approve');
 const statistics = r => require.ensure([], () => r(require('../page/statistics/index.vue')), 'statistics');
+const importExcel = r => require.ensure([], () => r(require('../page/importExcel/index.vue')), 'importExcel');
 const mangeHome = r => require.ensure([], () => r(require('../manage_pages/mange_home/manageHome.vue')), 'mange_home');
 const meunFunSet = r => require.ensure([], () => r(require('../manage_pages/system/meunFunctionSetting.vue')), 'meunFunSet');
 const userSet = r => require.ensure([], () => r(require('../manage_pages/system/userSet.vue')), 'userSet');
@@ -53,6 +53,9 @@ export default [{
         }, {
             path: 'statistics',
             component: statistics
+        },{
+            path: 'importExcel',
+            component: importExcel
         }]
     }, {
         path: '/mangeHome',

@@ -30,11 +30,17 @@
                     </svg>
                     &nbsp;模板下载
                 </el-menu-item>
-                <el-menu-item index="5" @click="statistics" v-show="isok">
+                <el-menu-item index="5" @click="statistics" >
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-stat"></use>
                     </svg>
                     &nbsp;统计
+                </el-menu-item>
+                <el-menu-item index="6" @click="importExcrl" v-show="false">
+                    <svg class="icon" aria-hidden="true">
+                        <use xlink:href="#icon-stat"></use>
+                    </svg>
+                    &nbsp;一键导入
                 </el-menu-item>
             </el-menu>
         </el-col>
@@ -70,6 +76,9 @@
             },
             statistics(){
                 this.$router.replace('/home/statistics')
+            },
+            importExcrl(){
+                this.$router.replace('/home/importExcel')
             }
 
         },
