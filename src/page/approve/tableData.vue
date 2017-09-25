@@ -283,7 +283,7 @@
     }
     .el-table td.processClass .cell{
         text-align: center;
-        color: mediumseagreen;
+        color: mediumseagreen;    
     }
 
 
