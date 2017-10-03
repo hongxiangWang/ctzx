@@ -74,7 +74,7 @@
                 @close="closeDialog"
                 :showEditBtn="true"
                 :businessType="selectBusinessType"></infoDialog>
-
+        <!--流程详情-->
         <el-dialog
                 id="approveTable"
                 title="业务流程审批详情"
@@ -84,6 +84,7 @@
             <steps
                     @stepClose="stepEditClose"
                     @stepPass="stepPass"
+                    @stepBack="stepBack"
                     :stepData="stepDatas"
                     :rowData="rowDatas">
             </steps>
@@ -126,6 +127,18 @@
                 <el-button @click="chooseUserDialog = false">取 消</el-button>
                 <el-button type="primary" @click="sureSendFlow">确 定</el-button>
             </span>
+        </el-dialog>
+        <!--流程退回-->
+        <el-dialog title="退回" :visible.sync="approveBackDialog" :before-close="approveBackClose">
+            <el-form>
+                <el-form-item label="退回原因">
+                    <el-input type="textarea" v-model="backSuggest" auto-complete="off"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer">
+                <el-button @click="approveBackDialog = false">取 消</el-button>
+                <el-button type="primary" @click="approveBackSure">确 定</el-button>
+            </div>
         </el-dialog>
     </div>
 
@@ -171,7 +184,11 @@
                 approveform: {
                     suggest: ''
                 },
-                isShsowCascader:true,
+                isShsowCascader: true,
+                accout: require('store').get('account'),
+                approveBackDialog: false,
+                backSuggest: '',
+                backData:{},
             }
         },
         props: {
@@ -201,10 +218,16 @@
 
             //确定发送审批
             sureSendFlow() {
-
-                if ((this.select_people_id == '' || this.select_people_id == undefined)&& this.isShsowCascader) {
+                if ((this.select_people_id == '' || this.select_people_id == undefined) && this.isShsowCascader) {
                     this.$message({message: '请选择审批人'});
                     return;
+                }
+                if (!this.isShsowCascader) {
+                    this.select_people_id = this.accout.people_code;
+                    if (this.approveform.suggest == '') {
+                        this.$message({message: '请填写建议'});
+                        return;
+                    }
                 }
                 let params = {
                     people_id: this.select_people_id,
@@ -215,15 +238,15 @@
                     process_code: '001',
 
                 }
-                console.log('params---',params)
                 this.$ajax.post('/process/makeprocesstransition', params).then(res => {
-                    console.log('params---',res.data)
+                    console.log('params---', res.data)
                     if (res.data.errno == 0) {
                         this.$message({message: '提交审批成功', type: 'success'});
-                        if(this.flowDialog){
+                        if (this.flowDialog) {
                             this.flowDialog = false;
-                        };
-                        this.tableData.splice(this.select_row.index,1);
+                        }
+                        ;
+                        this.tableData.splice(this.select_row.index, 1);
                     } else {
                         this.$message({message: '提交审批失败', type: 'error'})
                     }
@@ -261,13 +284,13 @@
                     let show_data = res.data.data.data;
                     let flowType = flowPointName[0];
                     let steps = [];
-                    console.log('presss---',res.data)
+                    console.log('presss---', res.data)
                     flowType.forEach((value, index) => {
                         let item = {};
                         item.title = value;
                         if (show_data.length > 0) {
                             show_data.forEach((v, i) => {
-                                if (v.process_now_status == (index + 2)) {
+                                if (v.process_now_status-1 == index) {
                                     item.memo = v.memo;
                                 }
                                 if (show_data[0].process_now_status == index + 1 && this.spilctIndex == 2) {
@@ -302,11 +325,11 @@
             stepEditClose() {
                 this.stepEditDialog = false;
             },
-            stepPass(row,steps) {
+            stepPass(row, steps) {
                 this.chooseUserDialog = true;
-                if(steps.active==6){
+                if (steps.active == 6) {
                     this.isShsowCascader = false;
-                }else{
+                } else {
                     this.isShsowCascader = true;
                 }
                 this.cascderParmas = {
@@ -338,6 +361,32 @@
             },
             approveCascaderChange(call) {
                 this.select_people_id = call[call.length - 1];
+            },
+            stepBack(row, steps) {
+                this.approveBackDialog = true;
+                this.backData ={
+                    process_code:'001',
+                    business_serial_number:row.serial_number,
+                    business_type:row.business_type,
+                    process_now_status:steps.active,
+                    people_account_next:row.edit_people_card
+                }
+            },
+            approveBackClose() {
+                this.approveBackDialog = false;
+            },
+            approveBackSure(){
+                console.log('makeprocessback---params---',this.backData);
+                this.backData.suggest = this.backSuggest;
+                if(this.backSuggest==''){
+                    this.$message({message: '请填写退回原因'});
+                    return;
+                }
+                this.$ajax.post('/process/makeprocessback',this.backData).then(res=>{
+                    console.log('makeprocessback----',res.data)
+                }).catch(err=>{
+                    console.log('makeprocessback----',err)
+                })
             }
 
         },

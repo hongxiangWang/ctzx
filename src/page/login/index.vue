@@ -185,19 +185,21 @@
         }, 1000)
     }
 
-    function getAccount(_this, data) {
+    function getAccount(vm, data) {
         let list = data.access_list;
         let json = {};
         list.forEach(value => {
             json[value.node_id] = value.node_status
         })
-        _this.$localStore.set('token', data.token);
+        vm.$localStore.set('token', data.token);
         json.name = data.people_name;
         json.loginName = data.loginName;
         json.dept_id = data.dept_id;
         json.dept_name = data.dept_name;
+        json.people_code = data.people_code;
         json.role_code = data.access_list[0].role_code;
-        _this.$localStore.set('account', json);
+        vm.$localStore.set('account', json);
+        
     }
     //获取URL参数
     function GetQueryString(name) {

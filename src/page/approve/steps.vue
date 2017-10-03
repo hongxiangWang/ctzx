@@ -8,7 +8,7 @@
                 <span slot="description">
                     <span style="color: #5e7382">{{item.memo}}</span>
                     <el-button size="small" @click="pass_agree" :plain="true" type="success" v-if="item.passBtn">通过</el-button>
-                    <el-button  size="small" @click="pass_back" :plain="true" type="info" v-if="item.backBtn">退回</el-button>
+                    <el-button  size="small" @click="pass_back" :plain="true" type="danger" v-if="item.backBtn">退回</el-button>
                 </span>
             </el-step>
         </el-steps>
@@ -34,7 +34,7 @@
                 this.$emit('stepPass',this.rowData,this.stepData);//确定按钮
             },
             pass_back(){
-                this.$emit('stepPass',0);//取消按钮
+                this.$emit('stepBack',this.rowData,this.stepData);//取消按钮
             },
             handleClose(){
                 this.$emit('stepEditClose');

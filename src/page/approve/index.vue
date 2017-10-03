@@ -167,7 +167,7 @@
         let url = '/process/getsomeprocessinfobyrolecode';
 
         vm.$ajax.post(url, params).then(res => {
-            console.log('')
+            console.log('getsomeprocessinfobyrolecode--',res.data)
             changeTableDataBusinessType(res.data.data.data, type);
             let arr = res.data.data.data;
             if (arr.length > 0) {
