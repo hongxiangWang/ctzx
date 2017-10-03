@@ -1,4 +1,5 @@
 import App from '../App.vue'
+
 const login = r => require.ensure([], () => r(require('../page/login/index.vue')), 'login');
 const home = r => require.ensure([], () => r(require('../page/home/index.vue')), 'home');
 const record = r => require.ensure([], () => r(require('../page/record/index.vue')), 'record');
@@ -15,6 +16,7 @@ const userSet = r => require.ensure([], () => r(require('../manage_pages/system/
 const permissionSet = r => require.ensure([], () => r(require('../manage_pages/system/permissionSetting.vue')), 'permissionSet');
 const roleManage = r => require.ensure([], () => r(require('../manage_pages/system/roleManage.vue')), 'roleManage');
 const modeldownload = r => require.ensure([], () => r(require('../page/modeldownload/index.vue')), 'modeldownload');
+const ApproveMode = r => require.ensure([], () => r(require('../components/ApproveMode.vue')), 'ApproveMode');
 export default [{
     path: '/',
     component: App,
@@ -53,9 +55,12 @@ export default [{
         }, {
             path: 'statistics',
             component: statistics
-        },{
+        }, {
             path: 'importExcel',
             component: importExcel
+        }, {
+            path: 'ApproveMode',
+            component: ApproveMode
         }]
     }, {
         path: '/mangeHome',

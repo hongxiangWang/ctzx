@@ -164,7 +164,7 @@
 
         }
     }
-    import '../../style/step.css'
+//    import '../../style/step.css'
     import '../../style/record.less'
 
     function dealTelNum(json) {

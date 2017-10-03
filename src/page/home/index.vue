@@ -29,7 +29,7 @@
         created(){
             this.$router.replace('/home/record')
         },
-        mounted(){
+        created() {
             let _this = this;
             this.$ajax.interceptors.request.use(function (config) {
                 //在请求发出之前进行一些操作
@@ -54,17 +54,14 @@
                 //Do something with response error
                 return Promise.reject(err);
             })
-
+        },
+        mounted(){
             //获取地州列表
             this.$ajax.post('area/arealist', '').then(response => {
 
                 if (response.data.errno != 0) {
                     return;
                 }
-//                let areaArr = [];
-//                response.data.data.forEach(value => {
-//                    areaArr.push(value.area_name);
-//                });
                 this.$localStore.set("areaArr", response.data.data);
             }).catch(error => {
                 console.log(error)

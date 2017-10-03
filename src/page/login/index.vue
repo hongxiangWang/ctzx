@@ -103,7 +103,7 @@
                             switch (Number(response.data.data.flg)) {
                                 case 0 :
                                     getAccount(this, response.data.data);
-                                    this.$router.replace('home');
+                                    this.$router.replace('home/approve');
                                     break;
                                 default:
                                     console.log(response.data)

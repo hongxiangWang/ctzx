@@ -4,6 +4,7 @@
             <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
                      theme="dark">
                 <el-menu-item
+                        router
                         index="1"
                         @click="recode"
                         v-if="account[3]==0">
@@ -16,7 +17,7 @@
                         index="2"
                         @click="search"
                         v-if="account[1]==0">
-                    <i class="el-icon-search"></i>查询
+                    <i class="el-icon-search">&nbsp;&nbsp;查询</i>
                 </el-menu-item>
                 <el-menu-item index="3" @click="approve" v-show="isok">
                     <svg class="icon" aria-hidden="true">
@@ -30,18 +31,22 @@
                     </svg>
                     &nbsp;模板下载
                 </el-menu-item>
-                <el-menu-item index="5" @click="statistics" >
+                <el-menu-item index="5" @click="statistics" v-if="false">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-stat"></use>
                     </svg>
                     &nbsp;统计
                 </el-menu-item>
-                <el-menu-item index="6" @click="importExcrl" v-show="false">
+                <el-menu-item index="6" @click="importExcrl" v-if="false">
                     <svg class="icon" aria-hidden="true">
                         <use xlink:href="#icon-stat"></use>
                     </svg>
                     &nbsp;一键导入
                 </el-menu-item>
+
+                <!--<el-menu-item  @click="importExcrl" index="/home/modeldownload" >-->
+                    <!--&nbsp;一键导入-->
+                <!--</el-menu-item>-->
             </el-menu>
         </el-col>
     </el-row>
@@ -78,7 +83,7 @@
                 this.$router.replace('/home/statistics')
             },
             importExcrl(){
-                this.$router.replace('/home/importExcel')
+                this.$router.replace('/home/ApproveMode')
             }
 
         },

@@ -4,18 +4,12 @@
     <el-select v-model="value5" filterable placeholder="请选择" @change="optionClick" >
       <el-option
         v-for="item in options"
+        :key="item"
         :label="item.label"
         :value="item.value">
       </el-option>
     </el-select>
     <br>
-    <!--<label>搜&nbsp;&nbsp;&nbsp;&nbsp;索&nbsp;&nbsp;&nbsp;&nbsp;</label>-->
-    <!--<el-autocomplete-->
-      <!--v-model="autocomplete"-->
-      <!--:fetch-suggestions="querySearchAsync"-->
-      <!--placeholder="请输入内容"-->
-      <!--@select="handleSelect"-->
-    <!--&gt;</el-autocomplete>-->
   </div>
 </template>
 <script>
