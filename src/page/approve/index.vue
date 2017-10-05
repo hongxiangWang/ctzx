@@ -11,11 +11,36 @@
                 结果为所有本地网
             </span>
         </div>
+        <div id='searchInput' @keyup.enter="searchResult" v-if="searchInputShow">
+            <el-row>
+                <el-col :span="20">
+                    <el-input placeholder="请输入内容" v-model="searchCon">
+                        <div slot="prepend">
+                            <el-select v-model="selectBusinessType" placeholder="请选择">
+                                <el-option label="语音中继" value="1"></el-option>
+                                <el-option label="400号码" value="2"></el-option>
+                                <el-option label="呼叫中心" value="3"></el-option>
+                            </el-select>
+                            <el-select v-model="selectConType" placeholder="请选择" id="second"
+                                       @change="selectConTypeChange">
+                                <el-option label="本地网" value="1"></el-option>
+                                <el-option label="发起人" value="2"></el-option>
+                                <el-option label="客户名称" value="3"></el-option>
+                                <el-option label="流水号" value="4"></el-option>
+                            </el-select>
+                        </div>
+                        <el-button slot="append" icon="search" @click="searchResult"></el-button>
+                    </el-input>
+                </el-col>
+            </el-row>
+
+        </div>
         <!--<router-view ref="approve"></router-view>-->
         <h5 style="margin: 0.5rem 0;padding: 0">搜索结果：共计<span style="color: red;">&nbsp;{{tableData.length}}&nbsp;</span>条&nbsp;&nbsp;&nbsp;&nbsp;
         </h5>
         <table-data
                 :tableData="tableData"
+                :tableLoading="tableLoading"
                 :spilctIndex="spilctIndex"></table-data>
     </div>
 
@@ -38,8 +63,12 @@
                 ],
                 clickType: 1,
                 tableData: [],
-                spilctIndex:0,
+                spilctIndex: 0,
                 account: {},
+                tableLoading: false,
+                searchCon: '',
+                selectConType: '',
+                selectBusinessType: ''
 
             }
         },
@@ -57,7 +86,18 @@
                         value.isCilck = false;
                     }
                 })
-
+            },
+            searchResult() {
+                if (this.selectConType == '' || this.searchCon == '' || this.selectBusinessType == '') {
+                    this.$message({message:'请将查询条件填写完整'});
+                    return;
+                }
+                getAjaxClickData(this, this.spilctIndex)
+            }
+        },
+        computed:{
+            searchInputShow(){
+                return true;
             }
         },
         components: {
@@ -86,7 +126,7 @@
                     ];
                     this.btnArr = title_arr;
                     getAjaxClickData(this, 1);
-
+                    this.spilctIndex = 1;
                     break;
                 default:
                     title_arr = [
@@ -97,20 +137,10 @@
                     this.spilctIndex = 2;
                     break;
             }
-            //getAjaxTableDate(this,1);//获取待发起的业务
 
         }
     }
 
-    function getAjaxTableDate(vm, chooseProcessStatus) {
-        vm.tableData = [];
-        //获取语音中继,流程状态为1的
-        getAjaxData(vm, chooseProcessStatus, 1);
-        //获取400
-        getAjaxData(vm, chooseProcessStatus, 2);
-        //获取呼叫中心
-        getAjaxData(vm, chooseProcessStatus, 3);
-    }
 
     function changeTableDataBusinessType(arr, type) {
         arr.forEach(item => {
@@ -120,15 +150,18 @@
 
     function getAjaxData(vm, process, type) {
         let params = {
-            process_status: process,
+            select_title: process,
             business_type: type,
+            search_type: vm.selectConType,
+            search_content: vm.searchCon
         }
         let account = require('store').get('account');
         vm.account = account;
-        let url = '/process/getprocessinfobyrolecode/';
+        let url = '/process/getsomeprocessinfobyrolecode/';
         if (account.role_code == '4444') {
             url = '/process/getprocessinfo';
         }
+        console.log('params----', params, url);
         vm.$ajax.post(url, params).then(res => {
             changeTableDataBusinessType(res.data.data.data, type);
             let arr = res.data.data.data;
@@ -137,50 +170,29 @@
                     setBusinessTypeName(item.business_type, item)
                     vm.tableData.push(item);
                 })
-                // console.log(JSON.stringify(vm.tableData,"---->vm.tableData"))
             }
+            vm.tableLoading = false;
         }).catch(err => {
             console.log(err);
             vm.$message({message: '有些数据获取失败了' + err.message, type: 'warning'})
+             vm.tableLoading = false;
         })
     }
 
     //
     function getAjaxClickData(vm, select_title) {
         vm.tableData = [];
-        //获取语音中继,流程状态为1的
-        getClickData(vm, select_title, 1);
-        //获取400
-        getClickData(vm, select_title, 2);
-        //获取呼叫中心
-        getClickData(vm, select_title, 3);
-    }
-
-    //点击标头，显示不同信息
-    function getClickData(vm, select_title, type) {
-        let params = {
-            select_title: select_title,
-            business_type: type,
+        vm.tableLoading = true;
+        if (vm.selectBusinessType != '') {
+            getAjaxData(vm, select_title, vm.selectBusinessType);
+            return;
         }
-        let account = require('store').get('account');
-        vm.account = account;
-        let url = '/process/getsomeprocessinfobyrolecode';
-
-        vm.$ajax.post(url, params).then(res => {
-            console.log('getsomeprocessinfobyrolecode--',res.data)
-            changeTableDataBusinessType(res.data.data.data, type);
-            let arr = res.data.data.data;
-            if (arr.length > 0) {
-                arr.forEach(item => {
-                    setBusinessTypeName(item.business_type, item)
-                    vm.tableData.push(item);
-                })
-                // console.log(JSON.stringify(vm.tableData,"---->vm.tableData"))
-            }
-        }).catch(err => {
-            console.log(err);
-            vm.$message({message: '有些数据获取失败了' + err.message, type: 'warning'})
-        })
+        //获取语音中继,流程状态为1的
+        getAjaxData(vm, select_title, 1);
+        //获取400
+        getAjaxData(vm, select_title, 2);
+        //获取呼叫中心
+        getAjaxData(vm, select_title, 3);
     }
 
     function setBusinessTypeName(n, item) {

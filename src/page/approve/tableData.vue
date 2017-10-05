@@ -3,7 +3,9 @@
         <el-table
                 :data="tableData"
                 border
-                style="width: 100%">
+                max-height="530"
+                v-loading.body="tableLoading"
+                style="width: 100%; margin: 0 20px">
             <el-table-column
                     label="日期"
                     width="120">
@@ -188,12 +190,16 @@
                 accout: require('store').get('account'),
                 approveBackDialog: false,
                 backSuggest: '',
-                backData:{},
+                backData: {},
             }
         },
         props: {
             tableData: Array,
-            spilctIndex: Number
+            spilctIndex: Number,
+            tableLoading:{
+                type:Boolean,
+                default:false
+            }
         },
         methods: {
 
@@ -211,7 +217,9 @@
                 this.cascderParmas = {
                     business_type: row.business_type,
                     process_status: row.process_status,
-                    process_code: "001"
+                    process_code: "001",
+                    business_serial_number: row.serial_number,
+                    business_type: row.business_type
                 }
                 this.chooseUserDialog = true;
             },
@@ -238,6 +246,8 @@
                     process_code: '001',
 
                 }
+                console.log('params---', params)
+
                 this.$ajax.post('/process/makeprocesstransition', params).then(res => {
                     console.log('params---', res.data)
                     if (res.data.errno == 0) {
@@ -273,7 +283,7 @@
                 let params = {
                     business_type: row.business_type,
                     process_code: '001',
-                    business_serial_number: row.serial_number
+                    business_serial_number: row.serial_number,
                 }
                 this.select_row = row;
                 this.select_row.index = index;
@@ -284,16 +294,23 @@
                     let show_data = res.data.data.data;
                     let flowType = flowPointName[0];
                     let steps = [];
-                    console.log('presss---', res.data)
+                    //console.log('presss---', res.data);
                     flowType.forEach((value, index) => {
                         let item = {};
                         item.title = value;
                         if (show_data.length > 0) {
                             show_data.forEach((v, i) => {
-                                if (v.process_now_status-1 == index) {
+                                if (v.process_now_status - 2 == index && v.process_before_status == '') {
                                     item.memo = v.memo;
                                 }
-                                if (show_data[0].process_now_status == index + 1 && this.spilctIndex == 2) {
+//                                if (v.process_now_status == 1 && index == 0) {
+//                                    item.memo = v.memo;
+//                                }
+
+                                if (v.process_before_status != ''  && v.process_before_status - 1 == index) {
+                                    item.memo = v.memo;
+                                }
+                                if (show_data[show_data.length - 1].process_now_status == index + 1 && this.spilctIndex == 2) {
                                     item.passBtn = true;
                                     item.backBtn = true;
                                 }
@@ -301,11 +318,10 @@
                         } else {
                             this.stepDatas.active = 0;
                         }
-
                         steps.push(item);
                     });
                     if (show_data.length > 0) {
-                        this.stepDatas.active = show_data[0].process_now_status;
+                        this.stepDatas.active = show_data[show_data.length - 1].process_now_status;
                     } else {
                         this.stepDatas.active = 0;
                     }
@@ -321,7 +337,6 @@
             flowClose() {
                 this.flowDialog = false;
             },
-            //Flow action
             stepEditClose() {
                 this.stepEditDialog = false;
             },
@@ -335,7 +350,9 @@
                 this.cascderParmas = {
                     business_type: row.business_type,
                     process_status: row.process_status,
-                    process_code: "001"
+                    process_code: "001",
+                    business_serial_number: row.serial_number,
+                    business_type: row.business_type
                 }
             },
             handleAgree() {//点击确定按钮
@@ -364,28 +381,36 @@
             },
             stepBack(row, steps) {
                 this.approveBackDialog = true;
-                this.backData ={
-                    process_code:'001',
-                    business_serial_number:row.serial_number,
-                    business_type:row.business_type,
-                    process_now_status:steps.active,
-                    people_account_next:row.edit_people_card
+                this.backData = {
+                    process_code: '001',
+                    business_serial_number: row.serial_number,
+                    business_type: row.business_type,
+                    process_now_status: steps.active,
+                    people_account_next: row.edit_people_card
                 }
             },
             approveBackClose() {
                 this.approveBackDialog = false;
             },
-            approveBackSure(){
-                console.log('makeprocessback---params---',this.backData);
+            approveBackSure() {
+                console.log('makeprocessback---params---', this.backData);
                 this.backData.suggest = this.backSuggest;
-                if(this.backSuggest==''){
+                if (this.backSuggest == '') {
                     this.$message({message: '请填写退回原因'});
                     return;
                 }
-                this.$ajax.post('/process/makeprocessback',this.backData).then(res=>{
-                    console.log('makeprocessback----',res.data)
-                }).catch(err=>{
-                    console.log('makeprocessback----',err)
+                this.$ajax.post('/process/makeprocessback', this.backData).then(res => {
+                    if (res.data.errno == 0) {
+                        this.$message({message: '已退回到发起人', type: 'success'});
+                        this.approveBackDialog = false;
+                        this.flowDialog = false;
+                        this.tableData.splice(this.select_row.index, 1);
+                    } else {
+                        this.$message({message: '操作失败，请重试', type: 'error'});
+                    }
+                }).catch(err => {
+                    console.log('makeprocessback----', err)
+                    this.$message({message: '操作失败，请重试', type: 'error'});
                 })
             }
 
@@ -394,11 +419,7 @@
             steps, infoDialog, ApproveForm
         },
 
-        computed: {
-            business() {
-                return 'sss'
-            }
-        }
+        computed: {}
     }
 
     function getChoooseUerList(vm, arr) {

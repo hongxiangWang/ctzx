@@ -42,6 +42,7 @@
           :sonfrom=item
           @sonClick="clickS"
           :rules="rules"
+          :key="item"
           :id="index"
           :ruleForm="ruleForm"
           @delClick="clickdel">

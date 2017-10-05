@@ -1,8 +1,7 @@
 <template>
-    <el-row class="tac">
-        <el-col :span="24">
             <el-menu default-active="1" class="el-menu-vertical-demo" @open="handleOpen" @close="handleClose"
-                     theme="dark">
+                     theme="dark"
+                        style="height: 100%">
                 <el-menu-item
                         router
                         index="1"
@@ -43,13 +42,7 @@
                     </svg>
                     &nbsp;一键导入
                 </el-menu-item>
-
-                <!--<el-menu-item  @click="importExcrl" index="/home/modeldownload" >-->
-                    <!--&nbsp;一键导入-->
-                <!--</el-menu-item>-->
             </el-menu>
-        </el-col>
-    </el-row>
 </template>
 <script>
     import '../../style/menu.css'

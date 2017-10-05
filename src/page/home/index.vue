@@ -3,7 +3,7 @@
         <div id="top">
             <topMeun></topMeun>
         </div>
-        <el-row>
+        <el-row type="flex"  justify="center" style="height: 100%">
             <el-col :span="3">
                 <div class="left-meun">
                     <leftMeun></leftMeun>
@@ -14,7 +14,6 @@
             </el-col>
         </el-row>
     </div>
-
 </template>
 
 <script>
@@ -72,17 +71,20 @@
 </script>
 
 <style lang="less">
+    html,body{
+        height: 100%;
+    }
     #home {
         padding: 0;
         margin: 0;
+        height: 100%;
     }
 
     .left-meun {
-        min-height: 93vh;
-        overflow: hidden;
-        display: block;
+        height: 100%;
+        flex-direction:column;
         background-color: #003366;
-        border-top: 1px solid #A6BACE;
         min-width: 120px;
+        box-shadow: 5px 0px 20px rgba(0,0,0,.2);
     }
 </style>

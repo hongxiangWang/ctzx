@@ -1,6 +1,6 @@
 <template>
   <el-menu default-active='activeIndex' class="el-menu-vertical-demo">
-    <el-menu-item index="1" @click="meunFunSet">
+    <el-menu-item index="1" @click="meunFunSet" v-if="false">
       <svg class="icon" aria-hidden="true">
         <use xlink:href="#icon-meun-set"></use>
       </svg>&nbsp;&nbsp;菜单功能设置

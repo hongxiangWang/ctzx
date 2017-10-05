@@ -60,6 +60,7 @@
         },
         mounted(){
            if(this.params!=undefined) {
+               console.log('params----',this.params)
                this.$ajax.post('people/getdeptlistinfo',this.params).then(res=>{
                     console.log('res-----',res.data.data.data);
                     if(res.data.errno==0){
