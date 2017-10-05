@@ -10,7 +10,7 @@
           <leftMeunProcess v-show="process"></leftMeunProcess>
         </div>
       </el-col>
-      <el-col :span="21">
+      <el-col :span="2 ">
         <router-view></router-view>
       </el-col>
     </el-row>
